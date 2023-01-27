@@ -5,8 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clicker Game</title>
+    <script src="Main.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    
+<body onload="Tick()">
+    <p style="size: 40px; text-align: center;" onclick="Click()">Clickify Me!</p>
+    <p class="mainText", id="FoodCounter">Food:</p>
+    <p class="mainText", id="KibbleWormBuyer", onclick="BuyBuilding(KibbleWorm)">Buy Kibble Worm</p>
 </body>
 </html>
