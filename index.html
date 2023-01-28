@@ -8,7 +8,7 @@
     <script src="Main.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="Tick()">
+<body onload="Tick()" style="background-color: darkslategrey;">
     <p style="size: 40px; text-align: center;" onclick="Click()">Clickify Me!</p>
     <p class="mainText", id="FoodCounter">Food:</p>
     <p class="mainText", id="CPSCounter">Food per second: 0</p>
@@ -17,5 +17,24 @@
     <br>
     <br>
     <p class="mainText", id="KibbleChestBuyer", onclick="BuyBuilding(KibbleChest)">Buy Kibble Crate</p>
+    <br>
+    <br>
+    <br>
+    <div class="ModGrid">
+
+        <img src="Media/PlaceholderFactory.png" width="50" onmouseover="SetActive(document.getElementById('ProductionDesc'))" onmouseout="Disable(document.getElementById('ProductionDesc'))">
+        <p id="ProductionBonus">ProdBoost</p>
+        <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="ProductionDesc">
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam libero nisi reprehenderit provident quam! Non quis totam veniam unde tenetur cumque culpa optio assumenda, provident ipsam magnam commodi quo perferendis.</p>
+        </div>
+        <br>
+        <img src="Media/MousePlaceholder.png" width="50" onmouseover="SetActive(document.getElementById('Click PowerDesc'))" onmouseout="Disable(document.getElementById('Click PowerDesc'))">
+        <p id="Click PowerBonus">ProdBoost</p>
+        <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="Click PowerDesc">
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam libero nisi reprehenderit provident quam! Non quis totam veniam unde tenetur cumque culpa optio assumenda, provident ipsam magnam commodi quo perferendis.</p>
+        </div>
+        
+    </div>
+    
 </body>
 </html>

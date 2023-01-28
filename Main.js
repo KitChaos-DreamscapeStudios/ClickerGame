@@ -1,15 +1,20 @@
+
+//#region ModiferDeclarations;
 class Modifier{
-    constructor(ProductionMod, HungerMod, TimeLeft, FoodPerClick, Name, Desc, img){
-            this.ProductionMod = ProductionMod;
-            this.HungerMod = HungerMod;
-            this.TimeLeft = TimeLeft;
-            this.FoodPerClick = FoodPerClick;
+    constructor(Modifer, Name, Desc, Type){
+            this.Modifer = Modifer
             this.Name = Name;
             this.Desc = Desc
-            this.img = img;
+            this.Type = Type
+           
     }
 
 }
+const SmallClickPowerBoost = new Modifier(0.25, "Small Click Power Bonus", "A Small 25% Clicking Power Bonus", "Click Power")
+const LargeProductionBoost = new Modifier(0.1, "Large Production Bonus", "A Large 10% Food Production Bonus", "Production");
+const SmallProductionBoost = new Modifier(0.05, "Small Production Bonus", "A Small 5% Food Production Bonus", "Production");//This is just a test Modifer
+const SmallProductionLoss = new Modifier(-0.05, "Small Production Loss", "A Small 5% Food Production Loss", "Production");//This is just a test Modifer
+//#endregion
 class PlayerData{
    
     constructor(){
@@ -17,7 +22,7 @@ class PlayerData{
         this.Modifers = [];
         this.FoodCap = 20000
         this.Food = 0
-        this.InflationReduction = 0
+        this.Inflation = 22
 
     }
 }
@@ -31,17 +36,20 @@ class Building{
     }
 }
 function Second(t){
-    return t*1000
+    return t/1000
 }
+
 const KibbleWorm = new Building("Kibble Worm", 0.01, 15)//For Production, take amount per second and divide by 1000
 
 const KibbleChest = new Building("Kibble Crate", 0.05, 100)
 
 //I (Kit) have tested this and found that this works like a prefab, and editing it will edit the stats everywhere for it.
 const MainPlayer = new PlayerData();
-const SmallProductionBoost = new Modifier(1.5, 1,-100,0, "Small Production Bonus", "A Small 5% Food Production Bonus", "Media/PlaceholderFactory.jpg");//This is just a test Modifer
 
-//MainPlayer.Modifers.push(SmallProductionBoost);
+//MainPlayer.Modifers.push(AllModifiers.SmallProductionBoost);
+//MainPlayer.Modifers.push(LargeProductionBoost);
+//MainPlayer.Modifers.push(SmallProductionLoss)
+MainPlayer.Modifers.push(SmallClickPowerBoost);
 function Tick(){
     for(let i = 0; i < MainPlayer.Modifers.length; i++){
         if(MainPlayer.Modifers[i].TimeLeft != -100){
@@ -75,33 +83,61 @@ function Tick(){
     var CPS = 0
     for(let i = 0; i<MainPlayer.Buildings.length; i++){
         
-        MainPlayer.Food += MainPlayer.Buildings[i].Production * GetBaseProductionModifier();
-        CPS += MainPlayer.Buildings[i].Production * GetBaseProductionModifier()
+        MainPlayer.Food += MainPlayer.Buildings[i].Production + (MainPlayer.Buildings[i].Production *GetModifier("Production"))
+        CPS += MainPlayer.Buildings[i].Production + (MainPlayer.Buildings[i].Production *GetModifier("Production"))
     }
+    GetModifier("Production")
+    GetModifier("Click Power")
     document.getElementById("FoodCounter").innerHTML = `Food: ${Math.round(MainPlayer.Food)}`
     document.getElementById("CPSCounter").innerHTML = `Food Gained per second: ${(CPS*100).toPrecision(2)}`
     window.setTimeout(Tick, 1)
 }
 
-function GetBaseProductionModifier(){
-    var Modifer = 0;
+function GetModifier(Type){
+    var Modifer= 0;
     for(let i =0;i<MainPlayer.Modifers.length; i++){
-        Modifer += MainPlayer.Modifers[i].ProductionMod
+        if(MainPlayer.Modifers[i].Type == Type){
+            Modifer += MainPlayer.Modifers[i].Modifer
+        }
+       
     }
-    if(Modifer == 0){
-        Modifer = 1
+    document.getElementById(`${Type}Bonus`).innerHTML = `${(Modifer*100).toPrecision(2)}%`
+    if(Modifer >0){
+        document.getElementById(`${Type}Bonus`).style.color = "Green"
     }
+    else{
+        document.getElementById(`${Type}Bonus`).style.color = "Red"
+    }
+    SetModifiersText(Type)
     return Modifer
 } 
 
-
-
-
+function SetActive(div){
+    div.style.display = "block";
+}
+function Disable(div){
+    div.style.display = "none";
+}
+function SetModifiersText(Type){
+    var ModText ="";
+    for(let i =0;i<MainPlayer.Modifers.length; i++){
+        if(MainPlayer.Modifers[i].Type == Type){
+            var Mod = ""
+            if(MainPlayer.Modifers[i].Modifer >0){
+                Mod = "+"
+            }
+            
+            ModText += `<b>${MainPlayer.Modifers[i].Name}</b><br>${Mod}${MainPlayer.Modifers[i].Modifer*100}% ${Type}<br>`
+        }
+       
+    }
+    document.getElementById(`${Type}Desc`).innerHTML = `You have the following ${Type} modifiers <br> ${ModText}`
+}
 function BuyBuilding(Building){
     if(MainPlayer.Food >= Building.Cost){
         MainPlayer.Buildings.push(Building)
         MainPlayer.Food -= Building.Cost
-        Building.Cost += ((Building.Cost/100)*(22*(MainPlayer.InflationReduction + 1)))
+        Building.Cost += ((Building.Cost/100)*(MainPlayer.Inflation))
         
         
     }
@@ -111,6 +147,6 @@ function BuyBuilding(Building){
    
 }
 function Click(){
-    MainPlayer.Food += 1
+    MainPlayer.Food += 1 + (1 * GetModifier("Click Power"))
     //Lets introduce more complex clicking logic later.
 }

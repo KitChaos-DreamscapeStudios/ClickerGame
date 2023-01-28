@@ -1,3 +1,21 @@
 .mainText{
     text-align: center;
 }
+.ModIcon{
+    grid-column: 1;
+}
+.ModText{
+    grid-area: rightZone;
+}
+.ModGrid{
+    
+    display:grid;
+    grid-template-columns: auto auto 250%;
+    grid-template-rows: auto auto auto auto auto;
+    background-color: burlywood;
+    width: 10%;
+    border-width: 10px;
+    border-color: black;
+    border-radius: 25%;
+    
+}
