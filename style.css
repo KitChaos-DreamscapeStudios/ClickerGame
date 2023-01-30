@@ -10,12 +10,32 @@
 .ModGrid{
     
     display:grid;
-    grid-template-columns: auto auto 250%;
+    grid-template-columns: auto auto auto;
     grid-template-rows: auto auto auto auto auto;
     background-color: burlywood;
-    width: 10%;
+    width: 100%;
     border-width: 10px;
     border-color: black;
-    border-radius: 20%;
+    border-radius: 10%;
     
+}
+.MainGrid{
+    display: grid;
+    grid-template-rows: 30% auto;
+    grid-template-columns: 20% 65% 15% ;
+}
+.GridBox{
+    border-width: 10px;
+    border-color: rgb(172, 137, 33);
+    background-color: rgb(75, 27, 27);
+    border-style: solid;
+    border-radius: 10%;
+}
+.ModPolGrid{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+.DecGrid{
+    background-color: darkslateblue;
+    border-radius: 10%;
 }

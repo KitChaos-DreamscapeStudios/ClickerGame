@@ -8,63 +8,86 @@
     <script src="Main.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="Tick()" style="background-color: darkslategrey;">
-    <p style="size: 40px; text-align: center;" onclick="Click()">Clickify Me!</p>
-    <p class="mainText", id="FoodCounter">Food:</p>
-    <p class="mainText", id="CPSCounter">Food per second: 0</p>
-    <p class="mainText", id="KibbleWormBuyer", onclick="BuyBuilding(KibbleWorm)">Buy Kibble Worm</p>
-    <br>
-    <br>
-    <br>
-    <p class="mainText", id="KibbleChestBuyer", onclick="BuyBuilding(KibbleChest)">Buy Kibble Crate</p>
-    <br>
-    <br>
-    <br>
-    <div class="ModGrid">
-
-        <img src="Media/PlaceholderFactory.png" width="50" onmouseover="SetActive(document.getElementById('ProductionDesc'))" onmouseout="Disable(document.getElementById('ProductionDesc'))">
-        <p id="ProductionBonus">ProdBoost</p>
-        <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="ProductionDesc">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam libero nisi reprehenderit provident quam! Non quis totam veniam unde tenetur cumque culpa optio assumenda, provident ipsam magnam commodi quo perferendis.</p>
-        </div>
-        <br>
-        <img src="Media/MousePlaceholder.png" width="50" onmouseover="SetActive(document.getElementById('Click PowerDesc'))" onmouseout="Disable(document.getElementById('Click PowerDesc'))">
-        <p id="Click PowerBonus">ProdBoost</p>
-        <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="Click PowerDesc">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam libero nisi reprehenderit provident quam! Non quis totam veniam unde tenetur cumque culpa optio assumenda, provident ipsam magnam commodi quo perferendis.</p>
-        </div>
-        <br>
-        <img src="Media/InflationIconPlaceholder.png" width="45" onmouseover="SetActive(document.getElementById('InflationDesc'))" onmouseout="Disable(document.getElementById('InflationDesc'))">
-        <p style="color: red;" id="InflationCurrent">InflationCurrent</p>
-        <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="InflationDesc">
-            <p>This is the current Inflation. It is how much the price of a building will increase after purchase</p>
-        </div>
-        
+<body onload="Tick()" style="background-color: darkslategrey; color: aliceblue; font-weight: bold;" class="MainGrid">
+    <div id="ClickerZone" class="GridBox">
+        <p style="size: 40px; text-align: center;" onclick="Click()">Clickify Me!</p>
+        <p class="mainText", id="FoodCounter">Food:</p>
+        <p class="mainText", id="CPSCounter">Food per second: 0</p>
     </div>
-    <div style="padding-left: 25%; padding-right: 25%; display: none;" id="LongTermOrShortTermEvent">
-        <div style="background-color: bisque; border-radius: 10%;">
-
-            <h2 style="text-align: center;">Getting Noticed</h2>
-            <p class="mainText">Your Efforts to Feed the Dog are getting noticed by some large companies. They are excited to support an up-and-coming entrepreneur, and would like to strike a deal</p>
-            <div style="display: grid; grid-template-columns: auto auto;column-gap: 25px;">
-                <button onmouseenter="SetActive(document.getElementById(`LongTermOrShortTermOption1Tooltip`))" onmouseleave="Disable(document.getElementById(`LongTermOrShortTermOption1Tooltip`))" onclick="AddPlayerEffects({Food:1345}), Disable(document.getElementById(`LongTermOrShortTermEvent`))">Request a Donation</button>
-                <button onmouseenter="SetActive(document.getElementById(`LongTermOrShortTermOption2Tooltip`))" onmouseleave="Disable(document.getElementById(`LongTermOrShortTermOption2Tooltip`))" onclick="AddPlayerEffects({Modifers:[Investment]}), Disable(document.getElementById(`LongTermOrShortTermEvent`))">Request an Investment</button>
+    
+    <div id = "EventZone" class="GridBox">
+        <div style="padding-left: 15%; padding-right: 15%; display: none;" id="LongTermOrShortTermEvent">
+            <div style="background-color: bisque; border-radius: 10%;">
+    
+                <h2 style="text-align: center;">Getting Noticed</h2>
+                <p class="mainText">Your Efforts to Feed the Dog are getting noticed by some large companies. They are excited to support an up-and-coming entrepreneur, and would like to strike a deal</p>
+                <div style="display: grid; grid-template-columns: auto auto;column-gap: 25px;">
+                    <button onmouseenter="SetActive(document.getElementById(`LongTermOrShortTermOption1Tooltip`))" onmouseleave="Disable(document.getElementById(`LongTermOrShortTermOption1Tooltip`))" onclick="AddPlayerEffects({Food:1345}), Disable(document.getElementById(`LongTermOrShortTermEvent`))">Request a Donation</button>
+                    <button onmouseenter="SetActive(document.getElementById(`LongTermOrShortTermOption2Tooltip`))" onmouseleave="Disable(document.getElementById(`LongTermOrShortTermOption2Tooltip`))" onclick="AddPlayerEffects({Modifers:[Investment]}), Disable(document.getElementById(`LongTermOrShortTermEvent`))">Request an Investment</button>
+                </div>
+                <p style="display: none; color: green;"class="mainText" id="LongTermOrShortTermOption1Tooltip">Gain 1345 food</p>
+                <p style="display: none; color:green"class="mainText" id="LongTermOrShortTermOption2Tooltip">Gain Small Investment Which Grants<br>+15% Production for 5 Minutes</p>
+    
             </div>
-            <p style="display: none; color: green;"class="mainText" id="LongTermOrShortTermOption1Tooltip">Gain 1345 food</p>
-            <p style="display: none; color:green"class="mainText" id="LongTermOrShortTermOption2Tooltip">Gain Small Investment Which Grants<br>+15% Production for 5 Minutes</p>
+            
+        </div>
+        <div style="padding-left: 25%; padding-right: 25%; display: none;">
+            <div style="background-color: bisque; border-radius: 10%;">
+    
+                <h2 style="text-align: center;" id="EventTitle">Title</h2>
+                <p class="mainText" id="EventDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque natus officiis expedita commodi, dicta dolorum laboriosam? Dignissimos repellendus officiis enim recusandae quaerat, explicabo doloremque excepturi quo consequuntur saepe! Aut, tempora.</p>
+    
+            </div>
+            
+        </div>
+
+    </div>
+
+    </div>
+    <div id="Shop" class="GridBox">
+        <p class="mainText", id="KibbleWormBuyer", onclick="BuyBuilding(KibbleWorm)">Buy Kibble Worm</p>
+        <br>
+        <br>
+        <br>
+        <p class="mainText", id="KibbleChestBuyer", onclick="BuyBuilding(KibbleChest)">Buy Kibble Crate</p>
+        <br>
+        <br>
+        <br>
+    </div>
+    <div id ="DogBox" class="GridBox"></div>
+    <div class="GridBox">
+        <div class="ModPolGrid">
+            <div class="ModGrid">
+
+                <img src="Media/PlaceholderFactory.png" width="50" onmouseover="SetActive(document.getElementById('ProductionDesc'))" onmouseout="Disable(document.getElementById('ProductionDesc'))">
+                <p id="ProductionBonus">ProdBoost</p>
+                <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="ProductionDesc">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam libero nisi reprehenderit provident quam! Non quis totam veniam unde tenetur cumque culpa optio assumenda, provident ipsam magnam commodi quo perferendis.</p>
+                </div>
+                <br>
+                <img src="Media/MousePlaceholder.png" width="50" onmouseover="SetActive(document.getElementById('Click PowerDesc'))" onmouseout="Disable(document.getElementById('Click PowerDesc'))">
+                <p id="Click PowerBonus">ProdBoost</p>
+                <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="Click PowerDesc">
+                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam libero nisi reprehenderit provident quam! Non quis totam veniam unde tenetur cumque culpa optio assumenda, provident ipsam magnam commodi quo perferendis.</p>
+                </div>
+                <br>
+                <img src="Media/InflationIconPlaceholder.png" width="45" onmouseover="SetActive(document.getElementById('InflationDesc'))" onmouseout="Disable(document.getElementById('InflationDesc'))">
+                <p style="color: red;" id="InflationCurrent">InflationCurrent</p>
+                <div style="display: none; background-color: rgb(65, 65, 65); border-radius: 20px; color: cornsilk; padding: 5%;"id="InflationDesc">
+                    <p>This is the current Inflation. It is how much the price of a building will increase after purchase</p>
+                </div>
+                
+            </div>
+            <div class="DecGrid">
+                
+            </div>
+        </div>
 
         </div>
         
-    </div>
-    <div style="padding-left: 25%; padding-right: 25%; display: none;">
-        <div style="background-color: bisque; border-radius: 10%;">
+   
 
-            <h2 style="text-align: center;" id="EventTitle">Title</h2>
-            <p class="mainText" id="EventDesc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque natus officiis expedita commodi, dicta dolorum laboriosam? Dignissimos repellendus officiis enim recusandae quaerat, explicabo doloremque excepturi quo consequuntur saepe! Aut, tempora.</p>
-
-        </div>
-        
-    </div>
+    
     
 </body>
 </html>
