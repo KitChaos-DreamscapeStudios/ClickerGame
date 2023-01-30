@@ -1,20 +1,17 @@
 
 //#region ModiferDeclarations;
 class Modifier{
-    constructor(Modifer, Name, Desc, Type){
+    constructor(Modifer, Name, Type, TimeLeft){
             this.Modifer = Modifer
             this.Name = Name;
-            this.Desc = Desc
+            
             this.Type = Type
+            this.TimeLeft = TimeLeft
            
     }
 
 }
-const SmallClickPowerBoost = new Modifier(0.25, "Small Click Power Bonus", "A Small 25% Clicking Power Bonus", "Click Power")
-const LargeProductionBoost = new Modifier(0.1, "Large Production Bonus", "A Large 10% Food Production Bonus", "Production");
-const SmallProductionBoost = new Modifier(0.05, "Small Production Bonus", "A Small 5% Food Production Bonus", "Production");//This is just a test Modifer
-const SmallProductionLoss = new Modifier(-0.05, "Small Production Loss", "A Small 5% Food Production Loss", "Production");//This is just a test Modifer
-//#endregion
+const Investment = new Modifier(0.15, "Investment", "Production", Second(300))
 class PlayerData{
    
     constructor(){
@@ -27,6 +24,9 @@ class PlayerData{
     }
 }
 
+const MainPlayer = new PlayerData();
+
+
 class Building{
     constructor(Type, Production, Cost){
         this.Type = Type
@@ -36,7 +36,40 @@ class Building{
     }
 }
 function Second(t){
-    return t/1000
+    return t*100
+}
+
+function AddPlayerEffects( {Inflation=0, Food=0, FoodCap=0, Modifers=[], Buildings=[]} = {}){
+    
+    MainPlayer.Inflation += Inflation
+    MainPlayer.Food += Food
+    MainPlayer.FoodCap += FoodCap
+    for(let i = 0; i<Modifers.length; i++){
+        
+    MainPlayer.Modifers.push(Modifers[i])
+   }
+   for(let i = 0; i<Buildings.length; i++){
+    MainPlayer.Buildings.push(Buildings[i])
+   }
+   
+   
+   
+   
+}
+function GenerateEffectText(Option, Inflation=0, Food=0, FoodCap=0, Modifers=[], Buildings=[]){
+    var retStr = ""
+    if(Inflation != 0){
+        var InfStr = ""
+        if(Inflation > 0){
+            InfStr = `\nGain ${Inflation} Inflation`
+
+        }
+        else{
+            InfStr = `\nLose ${Inflation} Inflation`
+        }
+        retStr += InfStr
+    }
+
 }
 
 const KibbleWorm = new Building("Kibble Worm", 0.01, 15)//For Production, take amount per second and divide by 1000
@@ -44,20 +77,24 @@ const KibbleWorm = new Building("Kibble Worm", 0.01, 15)//For Production, take a
 const KibbleChest = new Building("Kibble Crate", 0.05, 100)
 
 //I (Kit) have tested this and found that this works like a prefab, and editing it will edit the stats everywhere for it.
-const MainPlayer = new PlayerData();
 
-//MainPlayer.Modifers.push(AllModifiers.SmallProductionBoost);
-//MainPlayer.Modifers.push(LargeProductionBoost);
-//MainPlayer.Modifers.push(SmallProductionLoss)
-MainPlayer.Modifers.push(SmallClickPowerBoost);
+
 function Tick(){
+    //Spaghetti for Event Checkers
+    if(MainPlayer.Buildings.length > 5 && !MainPlayer.Modifers.includes(Investment)){
+        var Num = Math.floor(Math.random() * 10000)
+        if(Num > 9994){
+            SetActive(document.getElementById(`LongTermOrShortTermEvent`))
+        }
+    }
+    //End Spaghetti
     for(let i = 0; i < MainPlayer.Modifers.length; i++){
         if(MainPlayer.Modifers[i].TimeLeft != -100){
             MainPlayer.Modifers[i].TimeLeft -= 1;
             if(MainPlayer.Modifers[i].TimeLeft <=0){
 
+                MainPlayer.Modifers.pop(i);
                 
-                MainPlayer.Modifers = MainPlayer.Modifers.splice(i,1)
                 
             }
         }
@@ -88,6 +125,7 @@ function Tick(){
     }
     GetModifier("Production")
     GetModifier("Click Power")
+    document.getElementById("InflationCurrent").innerHTML = `${MainPlayer.Inflation}%`;
     document.getElementById("FoodCounter").innerHTML = `Food: ${Math.round(MainPlayer.Food)}`
     document.getElementById("CPSCounter").innerHTML = `Food Gained per second: ${(CPS*100).toPrecision(2)}`
     window.setTimeout(Tick, 1)
@@ -112,6 +150,7 @@ function GetModifier(Type){
     return Modifer
 } 
 
+
 function SetActive(div){
     div.style.display = "block";
 }
@@ -123,11 +162,15 @@ function SetModifiersText(Type){
     for(let i =0;i<MainPlayer.Modifers.length; i++){
         if(MainPlayer.Modifers[i].Type == Type){
             var Mod = ""
+            var len = ""
             if(MainPlayer.Modifers[i].Modifer >0){
                 Mod = "+"
             }
+            if(MainPlayer.Modifers[i].TimeLeft != -100){
+                len = `Active for ${Math.round(MainPlayer.Modifers[i].TimeLeft/100)} more seconds`
+            }
             
-            ModText += `<b>${MainPlayer.Modifers[i].Name}</b><br>${Mod}${MainPlayer.Modifers[i].Modifer*100}% ${Type}<br>`
+            ModText += `<b>${MainPlayer.Modifers[i].Name}</b><br>${Mod}${MainPlayer.Modifers[i].Modifer*100}% ${Type}<br>${len}<br>`
         }
        
     }
