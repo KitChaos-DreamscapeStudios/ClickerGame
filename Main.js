@@ -13,14 +13,8 @@ class Modifier{
    
 
 }
-class Policy{
-    constructor(Modifers, Name, Requirement){
-        this.Modifers = Modifers
-        this.Name = Name
-        this.Requirement = Requirement
-        this.IsActive = false
-    }
-}
+
+
 const Investment = new Modifier(0.15, "Investment", "Production", Second(300))
 
 class PlayerData{
